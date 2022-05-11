@@ -31,10 +31,6 @@ jobs:
           target: wasm32-unknown-unknown
           default: true
 
-
-      - name: Install wasm-pack
-        run: cargo install wasm-pack --version "^0.10"
-      
       - name: Install npm dependencies
         run: npm ci
 
