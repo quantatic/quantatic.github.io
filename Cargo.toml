@@ -1,0 +1,25 @@
+# You must change these to your own details.
+[package]
+name = "rust-webpack-template"
+description = "My super awesome Rust, WebAssembly, and Webpack project!"
+version = "0.1.0"
+authors = ["You <you@example.com>"]
+categories = ["wasm"]
+readme = "README.md"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[features]
+default = ["console_error_panic_hook"]
+
+[dependencies]
+wasm-bindgen = { version = "0.2.58", features = ["serde-serialize"] }
+console_error_panic_hook = { version = "0.1.6", optional = true }
+wee_alloc = { version = "0.4.5", optional = true }
+js-sys = "0.3.35"
+web-sys = { version = "0.3.35", features = ["console"] }
+
+[dev-dependencies]
+wasm-bindgen-test = "0.3.8"
