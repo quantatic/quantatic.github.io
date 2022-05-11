@@ -20,28 +20,28 @@ const handleKeyEvent = (key: string, pressed: boolean) => {
 
   switch (key) {
     case 'x':
-      emulator.set_button_pressed(ButtonType.A, pressed);
+      emulator.setButtonPressed(ButtonType.A, pressed);
       break;
     case 'z':
-      emulator.set_button_pressed(ButtonType.B, pressed);
+      emulator.setButtonPressed(ButtonType.B, pressed);
       break;
     case 'Enter':
-      emulator.set_button_pressed(ButtonType.Start, pressed);
+      emulator.setButtonPressed(ButtonType.Start, pressed);
       break;
     case 'Shift':
-      emulator.set_button_pressed(ButtonType.Select, pressed);
+      emulator.setButtonPressed(ButtonType.Select, pressed);
       break;
     case 'ArrowUp':
-      emulator.set_button_pressed(ButtonType.Up, pressed);
+      emulator.setButtonPressed(ButtonType.Up, pressed);
       break;
     case 'ArrowDown':
-      emulator.set_button_pressed(ButtonType.Down, pressed);
+      emulator.setButtonPressed(ButtonType.Down, pressed);
       break;
     case 'ArrowLeft':
-      emulator.set_button_pressed(ButtonType.Left, pressed);
+      emulator.setButtonPressed(ButtonType.Left, pressed);
       break;
     case 'ArrowRight':
-      emulator.set_button_pressed(ButtonType.Right, pressed);
+      emulator.setButtonPressed(ButtonType.Right, pressed);
       break;
     default:
       console.log(`don't know how to handle: ${key} pressed: ${pressed}`);

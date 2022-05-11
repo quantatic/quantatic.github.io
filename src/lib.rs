@@ -61,6 +61,7 @@ impl Emulator {
             .collect()
     }
 
+    #[wasm_bindgen(js_name = setButtonPressed)]
     pub fn set_button_pressed(&mut self, button: ButtonType, pressed: bool) {
         match button {
             ButtonType::A => self.emulator.set_button_pressed(Button::A, pressed),
