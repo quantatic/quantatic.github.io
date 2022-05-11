@@ -22,7 +22,21 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
-      # - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 14
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: wasm32-unknown-unknown
+          default: true
 
-      - run: npm ci
-      - run: npm run build
+
+      - name: Install wasm-pack
+        run: cargo install wasm-pack --version "^0.10"
+      
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
