@@ -69,6 +69,7 @@ canvas.width = ppuWidth * PIXEL_SCALE;
 canvas.height = ppuHeight * PIXEL_SCALE;
 
 const render = gpu.createKernel(function(data: number[]) {
+  /* eslint-disable no-invalid-this */
   const scale = this.constants.pixelScale as number;
   const ppuWidth = this.constants.width as number;
 
@@ -81,6 +82,7 @@ const render = gpu.createKernel(function(data: number[]) {
   const blue = data[offset + 2] / 255;
 
   this.color(red, green, blue);
+  /* eslint-enable */
 }, {
   constants: {
     pixelScale: PIXEL_SCALE,
@@ -90,8 +92,6 @@ const render = gpu.createKernel(function(data: number[]) {
   output: [ppuWidth * PIXEL_SCALE, ppuHeight * PIXEL_SCALE],
   canvas: canvas,
 });
-
-console.log(render.canvas);
 
 const runTick = () => {
   if (emulator === null) {
