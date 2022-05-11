@@ -46,6 +46,9 @@ const config: Configuration = {
     asyncWebAssembly: true,
     topLevelAwait: true,
   },
+  performance: {
+    hints: false,
+  },
 };
 
 export default config;

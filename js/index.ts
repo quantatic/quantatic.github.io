@@ -1,5 +1,8 @@
 import {ButtonType, Emulator} from '../pkg';
 import '../static/main.css';
+import {GPU} from 'gpu.js';
+
+const gpu = new GPU();
 
 const PIXEL_SCALE = 4;
 
@@ -65,31 +68,42 @@ const canvas = document.getElementById('render-canvas') as HTMLCanvasElement;
 canvas.width = ppuWidth * PIXEL_SCALE;
 canvas.height = ppuHeight * PIXEL_SCALE;
 
-const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
-ctx.fillStyle = 'red';
-ctx.fillRect(50, 50, 50, 50);
-ctx.fillStyle = 'green';
-ctx.fillRect(80, 80, 50, 50);
+const render = gpu.createKernel(function(data: number[]) {
+  const scale = this.constants.pixelScale as number;
+  const ppuWidth = this.constants.width as number;
 
+  const x = Math.floor(this.thread.x / scale);
+  const y = Math.floor((this.output.y - 1 - this.thread.y) / scale);
+  const offset = ((y * ppuWidth) + x) * 3;
+
+  const red = data[offset] / 255;
+  const green = data[offset + 1] / 255;
+  const blue = data[offset + 2] / 255;
+
+  this.color(red, green, blue);
+}, {
+  constants: {
+    pixelScale: PIXEL_SCALE,
+    width: ppuWidth,
+  },
+  graphical: true,
+  output: [ppuWidth * PIXEL_SCALE, ppuHeight * PIXEL_SCALE],
+  canvas: canvas,
+});
+
+console.log(render.canvas);
 
 const runTick = () => {
   if (emulator === null) {
     return;
   }
 
-  for (let i = 0; i < 25_000; i++) {
+  for (let i = 0; i < 7_500; i++) {
     emulator.step();
   }
 
   const buffer = emulator.buffer();
-  for (let y = 0; y < ppuHeight; y++) {
-    for (let x = 0; x < ppuWidth; x++) {
-      const offset = ((y * ppuWidth) + x) * 3;
-      const [red, green, blue] = buffer.slice(offset, offset + 3);
-      ctx.fillStyle = `rgb(${red}, ${green}, ${blue})`;
-      ctx.fillRect(x * PIXEL_SCALE, y * PIXEL_SCALE, PIXEL_SCALE, PIXEL_SCALE);
-    }
-  }
+  render(buffer);
 };
 
 const animationFrame = () => {
