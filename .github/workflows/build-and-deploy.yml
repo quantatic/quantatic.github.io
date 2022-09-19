@@ -22,6 +22,11 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      # Install build dependencies, required to build gpu.js.
+      # https://github.com/gpujs/gpu.js#installation
+      - name: Install gpu.js build dependencies
+        run: sudo apt install mesa-common-dev libxi-dev
+
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
 
