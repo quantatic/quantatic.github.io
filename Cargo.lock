@@ -51,7 +51,7 @@ dependencies = [
 [[package]]
 name = "emulator-core"
 version = "0.1.0"
-source = "git+https://github.com/quantatic/Rust-GB/#377f16eafaf0d3676fe08ee2b470994e9b045844"
+source = "git+https://github.com/quantatic/Rust-GB/#7b7821029200e25aec6f9214faa863101a5ecdb1"
 dependencies = [
  "crc32fast",
  "instant",
@@ -201,9 +201,9 @@ checksum = "2dffe52ecf27772e601905b7522cb4ef790d2cc203488bbd0e2fe85fcb74566d"
 
 [[package]]
 name = "once_cell"
-version = "1.14.0"
+version = "1.15.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2f7254b99e31cad77da24b08ebf628882739a608578bb1bcdfc1f9c21260d7c0"
+checksum = "e82dad04139b71a90c080c8463fe0dc7902db5192d939bd0950f074d014339e1"
 
 [[package]]
 name = "phf"
@@ -345,9 +345,9 @@ dependencies = [
 
 [[package]]
 name = "syn"
-version = "1.0.99"
+version = "1.0.100"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "58dbef6ec655055e20b86b15a8cc6d439cca19b667537ac6a1369572d151ab13"
+checksum = "52205623b1b0f064a4e71182c3b18ae902267282930c6d5462c91b859668426e"
 dependencies = [
  "proc-macro2",
  "quote",
