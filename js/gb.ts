@@ -1,18 +1,19 @@
-import {ButtonType, Emulator} from '../pkg';
+import {ButtonType, GbEmulator} from '../pkg';
 import '../static/main.css';
 import {GPU} from 'gpu.js';
 
 const gpu = new GPU();
 
-const PIXEL_SCALE = 4;
+const PIXEL_SCALE = 6;
+const CANVAS_ID = 'gb-render-canvas';
 
-let emulator: Emulator | null = null;
+let emulator: GbEmulator | null = null;
 
 const fileUpload = document.getElementById('file-upload') as HTMLInputElement;
 fileUpload.addEventListener('input', (e) => {
   const romFile = fileUpload.files![0];
   romFile.arrayBuffer().then((buf) => {
-    emulator = new Emulator(new Uint8Array(buf));
+    emulator = new GbEmulator(new Uint8Array(buf));
   });
 });
 
@@ -60,10 +61,15 @@ document.addEventListener('keyup', (e) => {
   handleKeyEvent(e.key, false);
 });
 
-const ppuWidth = Emulator.ppuWidth();
-const ppuHeight = Emulator.ppuHeight();
+const ppuWidth = GbEmulator.ppuWidth();
+const ppuHeight = GbEmulator.ppuHeight();
 
-const canvas = document.getElementById('render-canvas') as HTMLCanvasElement;
+const canvas = document.getElementById(CANVAS_ID) as HTMLCanvasElement | null;
+console.log(canvas);
+
+if (canvas === null) {
+  throw new Error(`could not find canvas with id ${CANVAS_ID}`);
+}
 
 canvas.width = ppuWidth * PIXEL_SCALE;
 canvas.height = ppuHeight * PIXEL_SCALE;

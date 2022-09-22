@@ -1,7 +1,7 @@
 import path from 'path';
-import CopyPlugin from 'copy-webpack-plugin';
 import WasmPackPlugin from '@wasm-tool/wasm-pack-plugin';
 import {Configuration} from 'webpack';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 
 const dist = path.resolve(__dirname, 'dist');
 
@@ -9,20 +9,17 @@ const dist = path.resolve(__dirname, 'dist');
 const config: Configuration = {
   mode: 'production',
   entry: {
-    index: './js/index.ts',
+    gb: './js/gb.ts',
+    gba: './js/gba.ts',
   },
   output: {
     path: dist,
-    filename: '[name].js',
   },
   module: {
     rules: [
       {
         test: /\.tsx?$/,
         use: 'ts-loader',
-        exclude: [
-          /node_modules/,
-        ],
       },
       {
         test: /\.css$/i,
@@ -31,12 +28,23 @@ const config: Configuration = {
     ],
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.css', '...'],
+    extensions: ['.ts', '.tsx', '.css', '.js'],
   },
   plugins: [
-    new CopyPlugin({
-      patterns: [
-        path.resolve(__dirname, 'static')],
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, 'static', 'index.html'),
+      inject: false,
+      filename: 'index.html',
+    }),
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, 'static', 'gb.html'),
+      chunks: ['gb'],
+      filename: 'gb.html',
+    }),
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, 'static', 'gba.html'),
+      chunks: ['gba'],
+      filename: 'gba.html',
     }),
     new WasmPackPlugin({
       crateDirectory: __dirname,
