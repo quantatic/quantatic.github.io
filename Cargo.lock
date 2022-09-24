@@ -51,7 +51,7 @@ dependencies = [
 [[package]]
 name = "emulator-core"
 version = "0.1.0"
-source = "git+https://github.com/quantatic/Rust-GB/#7b7821029200e25aec6f9214faa863101a5ecdb1"
+source = "git+https://github.com/quantatic/Rust-GB/#86f12caf127b1a8c5039873b3bafc122e8c7e1c5"
 dependencies = [
  "crc32fast",
  "instant",
@@ -60,7 +60,7 @@ dependencies = [
 [[package]]
 name = "emulator-core"
 version = "0.1.0"
-source = "git+https://github.com/quantatic/rust-gba#6fa96af2da9d433e2d695ff183964292b1dc5f76"
+source = "git+https://github.com/quantatic/rust-gba#f4dfd889c19e1473012728fb88b33ae49c3c3c10"
 dependencies = [
  "lazy_static",
  "phf",
@@ -261,9 +261,9 @@ checksum = "8b870d8c151b6f2fb93e84a13146138f05d02ed11c7e7c54f8826aaaf7c9f184"
 
 [[package]]
 name = "proc-macro2"
-version = "1.0.43"
+version = "1.0.44"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0a2ca2c61bc9f3d74d2886294ab7b9853abd9c1ad903a3ac7815c58989bb7bab"
+checksum = "7bd7356a8122b6c4a24a82b278680c73357984ca2fc79a0f9fa6dea7dced7c58"
 dependencies = [
  "unicode-ident",
 ]
