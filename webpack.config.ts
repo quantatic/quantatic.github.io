@@ -3,17 +3,11 @@ import WasmPackPlugin from '@wasm-tool/wasm-pack-plugin';
 import {Configuration} from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 
-const dist = path.resolve(__dirname, 'dist');
-
-
 const config: Configuration = {
   mode: 'production',
-  entry: {
-    gb: './js/gb.ts',
-    gba: './js/gba.ts',
-  },
+  entry: path.resolve(__dirname, 'index.ts'),
   output: {
-    path: dist,
+    path: path.resolve(__dirname, 'dist'),
   },
   module: {
     rules: [
@@ -31,21 +25,7 @@ const config: Configuration = {
     extensions: ['.ts', '.tsx', '.css', '.js'],
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, 'static', 'index.html'),
-      inject: false,
-      filename: 'index.html',
-    }),
-    new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, 'static', 'gb.html'),
-      chunks: ['gb'],
-      filename: 'gb.html',
-    }),
-    new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, 'static', 'gba.html'),
-      chunks: ['gba'],
-      filename: 'gba.html',
-    }),
+    new HtmlWebpackPlugin(),
     new WasmPackPlugin({
       crateDirectory: __dirname,
     }),
