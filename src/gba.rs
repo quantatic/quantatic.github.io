@@ -19,7 +19,7 @@ pub struct GbaEmulator {
 impl GbaEmulator {
     #[wasm_bindgen(constructor)]
     pub fn new(data: Box<[u8]>) -> GbaEmulator {
-        let cartridge = Cartridge::new(data.as_ref());
+        let cartridge = Cartridge::new(data.as_ref(), None).unwrap();
 
         Self {
             emulator: Cpu::new(cartridge),
@@ -27,7 +27,7 @@ impl GbaEmulator {
     }
 
     pub fn step(&mut self) {
-        self.emulator.fetch_decode_execute(false);
+        self.emulator.fetch_decode_execute_no_logs();
     }
 
     pub fn buffer(&self) -> Vec<u8> {
