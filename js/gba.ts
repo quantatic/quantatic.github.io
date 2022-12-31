@@ -29,6 +29,12 @@ const handleKeyEvent = (key: string, pressed: boolean) => {
     case 'z':
       emulator.setButtonPressed(ButtonType.B, pressed);
       break;
+    case 'q':
+      emulator.setButtonPressed(ButtonType.L, pressed);
+      break;
+    case 'e':
+      emulator.setButtonPressed(ButtonType.R, pressed);
+      break;
     case 'Enter':
       emulator.setButtonPressed(ButtonType.Start, pressed);
       break;
@@ -98,13 +104,18 @@ const render = gpu.createKernel(function(data: number[]) {
   canvas: canvas,
 });
 
+const CYCLES_PER_SECOND = 16_000_000;
+
 const runTick = () => {
   if (emulator === null) {
     return;
   }
 
-  for (let i = 0; i < 100_000; i++) {
-    emulator.step();
+  const startCycles = emulator.cycleCount();
+  while (emulator.cycleCount() - startCycles < (CYCLES_PER_SECOND / 60)) {
+    for (let i = 0; i < 10_000; i++) {
+      emulator.step();
+    }
   }
 
   const buffer = emulator.buffer();

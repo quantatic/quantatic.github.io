@@ -13,4 +13,6 @@ pub enum ButtonType {
     Right,
     Select,
     Start,
+    L,
+    R,
 }

@@ -24,4 +24,6 @@ js-sys = "0.3.60"
 wasm-bindgen-futures = "0.4.33"
 
 [profile.release]
+codegen-units = 1
+lto = true
 panic = "abort"

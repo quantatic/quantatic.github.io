@@ -27,7 +27,12 @@ impl GbaEmulator {
     }
 
     pub fn step(&mut self) {
-        self.emulator.fetch_decode_execute_no_logs();
+        self.emulator.fetch_decode_execute();
+    }
+
+    #[wasm_bindgen(js_name = cycleCount)]
+    pub fn cycle_count(&self) -> u64 {
+        self.emulator.bus.cycle_count()
     }
 
     pub fn buffer(&self) -> Vec<u8> {
@@ -36,7 +41,7 @@ impl GbaEmulator {
             .into_iter()
             .flatten()
             .flat_map(|palette_color| {
-                [palette_color.red, palette_color.green, palette_color.blue]
+                [palette_color.red(), palette_color.green(), palette_color.blue()]
                     .map(|color| (color << 3) | (color >> 2))
             })
             .collect()
@@ -53,6 +58,8 @@ impl GbaEmulator {
             ButtonType::Right => self.emulator.bus.keypad.set_pressed(Key::Right, pressed),
             ButtonType::Select => self.emulator.bus.keypad.set_pressed(Key::Select, pressed),
             ButtonType::Start => self.emulator.bus.keypad.set_pressed(Key::Start, pressed),
+            ButtonType::L => self.emulator.bus.keypad.set_pressed(Key::L, pressed),
+            ButtonType::R => self.emulator.bus.keypad.set_pressed(Key::R, pressed),
         };
     }
 
