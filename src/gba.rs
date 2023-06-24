@@ -1,10 +1,4 @@
-use gba_emulator_core::{
-    CYCLES_PER_SECOND,
-    Cartridge,
-    Cpu,
-    Key,
-    Lcd,
-};
+use gba_emulator_core::{Cartridge, Cpu, Key, Lcd, CYCLES_PER_SECOND};
 
 use wasm_bindgen::prelude::*;
 
@@ -41,8 +35,12 @@ impl GbaEmulator {
             .into_iter()
             .flatten()
             .flat_map(|palette_color| {
-                [palette_color.red(), palette_color.green(), palette_color.blue()]
-                    .map(|color| (color << 3) | (color >> 2))
+                [
+                    palette_color.red(),
+                    palette_color.green(),
+                    palette_color.blue(),
+                ]
+                .map(|color| (color << 3) | (color >> 2))
             })
             .collect()
     }

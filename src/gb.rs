@@ -53,7 +53,7 @@ impl GbEmulator {
             ButtonType::Right => self.emulator.set_button_pressed(Button::Right, pressed),
             ButtonType::Select => self.emulator.set_button_pressed(Button::Select, pressed),
             ButtonType::Start => self.emulator.set_button_pressed(Button::Start, pressed),
-            _ => {}, // ignore L/R buttons as these don't exist on GB.
+            _ => {} // ignore L/R buttons as these don't exist on GB.
         };
     }
 
