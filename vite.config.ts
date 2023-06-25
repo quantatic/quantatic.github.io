@@ -13,7 +13,8 @@ const config: UserConfig = {
     rollupOptions: {
       output: {
         manualChunks: {
-          gpujs: ['gpu.js']
+          gpujs: ['gpu.js'],
+          reactdom: ['react-dom']
         }
       },
     }
