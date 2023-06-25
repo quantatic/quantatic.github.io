@@ -16,12 +16,12 @@ const handleRomOrSaveUpload = async () => {
   const romFile = romUpload.files?.item(0);
 
   if (romFile === undefined || romFile === null) {
-    console.log("No ROM file has been uploaded yet");
+    console.log('No ROM file has been uploaded yet');
     return;
   }
 
   const saveFile = saveUpload.files?.item(0);
-  
+
   const romBuffer = new Uint8Array(await romFile.arrayBuffer());
   let saveBuffer: Uint8Array | undefined;
 
@@ -41,7 +41,7 @@ romUpload.addEventListener('input', handleRomOrSaveUpload);
 const saveDataDownload = document.getElementById('save-download') as HTMLButtonElement;
 saveDataDownload.addEventListener('click', (e) => {
   if (emulator === undefined) {
-    console.log("No emulator to generate save data from");
+    console.log('No emulator to generate save data from');
     return;
   }
 

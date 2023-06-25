@@ -57,7 +57,7 @@ const config: Configuration = {
   },
   performance: {
     hints: false,
-  }
+  },
 };
 
 export default config;
