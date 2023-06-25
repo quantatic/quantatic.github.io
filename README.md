@@ -7,10 +7,13 @@ $ npm install
 ## Start
 
 ```
-$ npm start
+$ npm run dev
 ...
-<i> [webpack-dev-server] Project is running at:
-<i> [webpack-dev-server] Loopback: http://localhost:8080/
+VITE v......  ready in ... ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: use --host to expose
+  ➜  press h to show help
 ...
 ```
 

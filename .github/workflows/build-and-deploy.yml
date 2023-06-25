@@ -46,6 +46,7 @@ jobs:
 
       - name: Run tests
         run: cargo test
+        working-directory: emulators-wasm
 
       - name: Install npm dependencies
         run: npm ci

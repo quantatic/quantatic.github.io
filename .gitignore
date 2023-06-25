@@ -1,6 +1,5 @@
 node_modules
 /dist
-/target
-/pkg
-/wasm-pack.log
+/emulators-wasm/target/
+/emulators-wasm/pkg/
 .rtx.toml
