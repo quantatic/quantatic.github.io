@@ -14,8 +14,6 @@ export default function Gba() {
     const gpu = new GPU();
 
     useEffect(() => {
-        console.log(canvasRef.current);
-
         // Ensure that canvas has not been unmounted.
         if (canvasRef.current === null) {
             return;
@@ -65,7 +63,6 @@ export default function Gba() {
         const animationFrame = () => {
             runTick();
             lastRequestedAnimationFrame = requestAnimationFrame(animationFrame);
-            console.log(lastRequestedAnimationFrame);
         };
 
         lastRequestedAnimationFrame = requestAnimationFrame(animationFrame);
@@ -122,7 +119,6 @@ export default function Gba() {
         return () => {
             document.removeEventListener('keydown', keyDownListener);
             document.removeEventListener('keyup', keyUpListener);
-            console.log(`Canceling animation frame: ${lastRequestedAnimationFrame}`);
             cancelAnimationFrame(lastRequestedAnimationFrame);
         };
     }, [romData]);
