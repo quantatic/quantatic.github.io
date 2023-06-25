@@ -12,6 +12,7 @@ const config: Configuration = {
     gb: './js/gb.ts',
     gba: './js/gba.ts',
   },
+  target: 'web',
   output: {
     path: dist,
   },
@@ -56,7 +57,7 @@ const config: Configuration = {
   },
   performance: {
     hints: false,
-  },
+  }
 };
 
 export default config;

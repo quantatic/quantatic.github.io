@@ -12,8 +12,11 @@ pub struct GbaEmulator {
 #[wasm_bindgen]
 impl GbaEmulator {
     #[wasm_bindgen(constructor)]
-    pub fn new(data: Box<[u8]>) -> GbaEmulator {
-        let cartridge = Cartridge::new(data.as_ref(), None).unwrap();
+    pub fn new(data: Box<[u8]>, save_data: Option<Box<[u8]>>) -> GbaEmulator {
+        let save_backup = save_data
+            .map(|data| serde_cbor::from_slice(&data).expect("Failed to deserialize save data"));
+
+        let cartridge = Cartridge::new(data.as_ref(), save_backup).unwrap();
 
         Self {
             emulator: Cpu::new(cartridge),
@@ -69,5 +72,12 @@ impl GbaEmulator {
     #[wasm_bindgen(js_name = ppuHeight)]
     pub fn ppu_height() -> usize {
         Lcd::LCD_HEIGHT
+    }
+
+    #[wasm_bindgen(js_name = saveData)]
+    pub fn save_data(&self) -> Box<[u8]> {
+        serde_cbor::to_vec(self.emulator.bus.cartridge.get_backup())
+            .expect("Failed to serialize save state")
+            .into_boxed_slice()
     }
 }

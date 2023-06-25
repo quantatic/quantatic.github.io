@@ -7,18 +7,56 @@ const gpu = new GPU();
 const PIXEL_SCALE = 5;
 const CANVAS_ID = 'gba-render-canvas';
 
-let emulator: GbaEmulator | null = null;
+let emulator: GbaEmulator | undefined = undefined;
 
-const fileUpload = document.getElementById('file-upload') as HTMLInputElement;
-fileUpload.addEventListener('input', (e) => {
-  const romFile = fileUpload.files![0];
-  romFile.arrayBuffer().then((buf) => {
-    emulator = new GbaEmulator(new Uint8Array(buf));
-  });
+const romUpload = document.getElementById('rom-upload') as HTMLInputElement;
+const saveUpload = document.getElementById('save-upload') as HTMLInputElement;
+
+const handleRomOrSaveUpload = async () => {
+  const romFile = romUpload.files?.item(0);
+
+  if (romFile === undefined || romFile === null) {
+    console.log("No ROM file has been uploaded yet");
+    return;
+  }
+
+  const saveFile = saveUpload.files?.item(0);
+  
+  const romBuffer = new Uint8Array(await romFile.arrayBuffer());
+  let saveBuffer: Uint8Array | undefined;
+
+  if (saveFile === undefined || saveFile === null) {
+    saveBuffer = undefined;
+  } else {
+    saveBuffer = new Uint8Array(await saveFile.arrayBuffer());
+  }
+
+  emulator = new GbaEmulator(romBuffer, saveBuffer);
+};
+
+
+saveUpload.addEventListener('input', handleRomOrSaveUpload);
+romUpload.addEventListener('input', handleRomOrSaveUpload);
+
+const saveDataDownload = document.getElementById('save-download') as HTMLButtonElement;
+saveDataDownload.addEventListener('click', (e) => {
+  if (emulator === undefined) {
+    console.log("No emulator to generate save data from");
+    return;
+  }
+
+  const saveData = new Blob([emulator.saveData()]);
+  console.log(saveData);
+
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(saveData);
+  a.download = `${romUpload.files?.item(0)!.name}.${Date.now()}.sav`;
+  a.click();
+  a.remove();
 });
 
 const handleKeyEvent = (key: string, pressed: boolean) => {
-  if (emulator === null) {
+  if (emulator === undefined) {
     return;
   }
 
@@ -107,7 +145,7 @@ const render = gpu.createKernel(function(data: number[]) {
 const CYCLES_PER_SECOND = 16_000_000;
 
 const runTick = () => {
-  if (emulator === null) {
+  if (emulator === undefined) {
     return;
   }
 
