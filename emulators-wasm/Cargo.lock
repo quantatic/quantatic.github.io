@@ -486,6 +486,7 @@ checksum = "436b050e76ed2903236f032a59761c1eb99e1b0aead2c257922771dab1fc8c78"
 name = "rust-webpack-template"
 version = "0.1.0"
 dependencies = [
+ "console_error_panic_hook",
  "emulator-core 0.1.0",
  "emulator-core 0.2.0",
  "futures",

@@ -13,6 +13,8 @@ pub struct GbaEmulator {
 impl GbaEmulator {
     #[wasm_bindgen(constructor)]
     pub fn new(data: Box<[u8]>, save_data: Option<Box<[u8]>>) -> GbaEmulator {
+        console_error_panic_hook::set_once();
+
         let save_backup = save_data
             .map(|data| serde_cbor::from_slice(&data).expect("Failed to deserialize save data"));
 

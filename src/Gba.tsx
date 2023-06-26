@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { ButtonType, GbaEmulator } from '../emulators-wasm/pkg';
-import { GPU } from 'gpu.js';
+import { GPU, IKernelRunShortcut } from 'gpu.js';
 
-const PIXEL_SCALE = 5;
+const DEFAULT_PIXEL_SCALE = 5;
+const PIXEL_SCALE_OPTIONS = Array.from({length: 10}).map((_val, idx) => idx + 1);
 
 const PPU_WIDTH = GbaEmulator.ppuWidth();
 const PPU_HEIGHT = GbaEmulator.ppuHeight();
@@ -10,22 +11,12 @@ const PPU_HEIGHT = GbaEmulator.ppuHeight();
 export default function Gba() {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const [romData, setRomData] = useState<ArrayBuffer | undefined>(undefined);
+    const [pixelScale, setPixelScale] = useState(DEFAULT_PIXEL_SCALE);
 
-    const gpu = new GPU();
-
+    const renderKernelRef = useRef<IKernelRunShortcut | null>(null);
     useEffect(() => {
-        // Ensure that canvas has not been unmounted.
-        if (canvasRef.current === null) {
-            return;
-        }
-
-        if (romData === undefined) {
-            return;
-        }
-
-        const gba = new GbaEmulator(new Uint8Array(romData));
-
-        const render = gpu.createKernel(function(data: number[]) {
+        const gpu = new GPU();
+        renderKernelRef.current = gpu.createKernel(function(data: number[]) {
             /* eslint-disable no-invalid-this */
             const scale = this.constants.pixelScale as number;
             const ppuWidth = this.constants.width as number;
@@ -42,13 +33,48 @@ export default function Gba() {
             /* eslint-enable */
             }, {
             constants: {
-                pixelScale: PIXEL_SCALE,
+                pixelScale: pixelScale,
                 width: PPU_WIDTH,
             },
-            graphical: true,
-            output: [PPU_WIDTH * PIXEL_SCALE, PPU_HEIGHT * PIXEL_SCALE],
-            canvas: canvasRef.current,
+            output: [PPU_WIDTH * pixelScale, PPU_HEIGHT * pixelScale],
+            graphical: true
         });
+    }, [pixelScale]);
+
+    const renderFunction = (data: Uint8Array) => {
+        // Ensure that canvas ref actually exists.
+        if (canvasRef.current === null) {
+            return;
+        }
+
+        // Ensure that kernel ref is initialized.
+        if (renderKernelRef.current === null) {
+            return;
+        }
+
+        renderKernelRef.current(data);
+
+        const kernelCanvas = renderKernelRef.current.canvas as HTMLCanvasElement;
+        canvasRef.current.getContext('2d')?.drawImage(kernelCanvas, 0, 0);
+    };
+
+    useEffect(() => {
+        // Ensure that canvas has not been unmounted.
+        if (canvasRef.current === null) {
+            return;
+        }
+
+        if (romData === undefined) {
+            return;
+        }
+
+        let gba: GbaEmulator;
+        try {
+            gba = new GbaEmulator(new Uint8Array(romData));
+        } catch (e) {
+            console.error(e);
+            return;
+        }
 
         const CYCLES_PER_SECOND = 16_000_000;
 
@@ -56,15 +82,15 @@ export default function Gba() {
             const startCycles = gba.cycleCount();
             while (gba.cycleCount() - startCycles < (CYCLES_PER_SECOND / 60)) {
                 for (let i = 0; i < 10_000; i++) {
-                gba.step();
+                    gba.step();
                 }
             }
 
             const buffer = gba.buffer();
-            render(buffer);
+            renderFunction(buffer);
         };
 
-        let lastRequestedAnimationFrame: number;
+        let lastRequestedAnimationFrame = 0;
         const animationFrame = () => {
             runTick();
             lastRequestedAnimationFrame = requestAnimationFrame(animationFrame);
@@ -133,8 +159,8 @@ export default function Gba() {
             <div>
                 <canvas ref={canvasRef}
                         style={{"outline": "1px solid black"}}
-                        width={PIXEL_SCALE * PPU_WIDTH}
-                        height={PIXEL_SCALE * PPU_HEIGHT}
+                        width={pixelScale * PPU_WIDTH}
+                        height={pixelScale * PPU_HEIGHT}
                 />
             </div>
 
@@ -155,6 +181,20 @@ export default function Gba() {
                             setRomData(undefined);
                         });
                 }} />
+
+            <br />
+            <br />
+            <div>
+                <select defaultValue={DEFAULT_PIXEL_SCALE} onChange={(e) => setPixelScale(Number(e.target.value))}>
+                    {PIXEL_SCALE_OPTIONS.map(scaleOption => {
+                        return (
+                            <option value={scaleOption} key={scaleOption}>
+                                Scale {scaleOption}x
+                            </option>
+                        )
+                    })}
+                </select>
+            </div>
             </div>
         </>
     )

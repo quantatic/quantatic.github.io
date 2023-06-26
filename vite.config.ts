@@ -1,15 +1,17 @@
 import { UserConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import wasm from 'vite-plugin-wasm';
+import topLevelAwait from "vite-plugin-top-level-await";
 
 // https://vitejs.dev/config/
 const config: UserConfig = {
   plugins: [
     react(),
-    wasm()
+    wasm(),
+    topLevelAwait(),
   ],
   build: {
-    target: 'esnext',
+    target: 'es6',
     rollupOptions: {
       output: {
         manualChunks: {
@@ -18,10 +20,7 @@ const config: UserConfig = {
         }
       },
     }
-  },
-  esbuild: {
-    
-  },
+  }
 };
 
 export default config;
