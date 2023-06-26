@@ -137,8 +137,8 @@ dependencies = [
 
 [[package]]
 name = "emulator-core"
-version = "0.1.0"
-source = "git+https://github.com/quantatic/Rust-GB/#5d3e5d3f0458399d0e88d86e4f05cca8a7e5c5ff"
+version = "0.2.0"
+source = "git+https://github.com/quantatic/Rust-GB/#5995a0907d6f42e59dbef66b3d51862e2f86eacd"
 dependencies = [
  "crc32fast",
  "instant",
@@ -147,7 +147,7 @@ dependencies = [
 [[package]]
 name = "emulator-core"
 version = "0.2.0"
-source = "git+https://github.com/quantatic/rust-gba#2cb7e03fb0f1b490828cf6ad023c899ae4c8fe14"
+source = "git+https://github.com/quantatic/rust-gba#fe177e851616979e2d01fd147e5be96b89ec1fc6"
 dependencies = [
  "anyhow",
  "lazy_static",
@@ -347,9 +347,9 @@ checksum = "e2abad23fbc42b3700f2f279844dc832adb2b2eb069b2df918f455c4e18cc646"
 
 [[package]]
 name = "libc"
-version = "0.2.146"
+version = "0.2.147"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f92be4933c13fd498862a9e02a3055f8a8d9c039ce33db97306fd5a6caa7f29b"
+checksum = "b4668fb0ea861c1df094127ac5f1da3409a82116a4ba74fca2e58ef927159bb3"
 
 [[package]]
 name = "log"
@@ -434,9 +434,9 @@ checksum = "8b870d8c151b6f2fb93e84a13146138f05d02ed11c7e7c54f8826aaaf7c9f184"
 
 [[package]]
 name = "proc-macro2"
-version = "1.0.61"
+version = "1.0.63"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "363a6f739a0c0addeaf6ed75150b95743aa18643a3c6f40409ed7b6db3a6911f"
+checksum = "7b368fba921b0dce7e60f5e04ec15e565b3303972b42bcfde1d0713b881959eb"
 dependencies = [
  "unicode-ident",
 ]
@@ -487,8 +487,8 @@ name = "rust-webpack-template"
 version = "0.1.0"
 dependencies = [
  "console_error_panic_hook",
- "emulator-core 0.1.0",
- "emulator-core 0.2.0",
+ "emulator-core 0.2.0 (git+https://github.com/quantatic/Rust-GB/)",
+ "emulator-core 0.2.0 (git+https://github.com/quantatic/rust-gba)",
  "futures",
  "js-sys",
  "serde_cbor",
@@ -601,9 +601,9 @@ checksum = "73473c0e59e6d5812c5dfe2a064a6444949f089e20eec9a2e5506596494e4623"
 
 [[package]]
 name = "syn"
-version = "2.0.21"
+version = "2.0.22"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1182caafaab7018eaea9b404afa8184c0baf42a04d5e10ae4f4843c2029c8aab"
+checksum = "2efbeae7acf4eabd6bcdcbd11c92f45231ddda7539edc7806bd1a04a03b24616"
 dependencies = [
  "proc-macro2",
  "quote",
