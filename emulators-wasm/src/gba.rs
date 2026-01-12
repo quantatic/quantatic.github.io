@@ -82,4 +82,9 @@ impl GbaEmulator {
             .expect("Failed to serialize save state")
             .into_boxed_slice()
     }
+
+    #[wasm_bindgen(js_name = cyclesPerSecond)]
+    pub fn cycles_per_second() -> usize {
+        CYCLES_PER_SECOND as usize
+    }
 }

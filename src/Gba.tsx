@@ -7,6 +7,7 @@ const PIXEL_SCALE_OPTIONS = Array.from({length: 10}).map((_val, idx) => idx + 1)
 
 const PPU_WIDTH = GbaEmulator.ppuWidth();
 const PPU_HEIGHT = GbaEmulator.ppuHeight();
+const CYCLES_PER_SECOND = GbaEmulator.cyclesPerSecond();
 
 export default function Gba() {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -76,11 +77,10 @@ export default function Gba() {
             return;
         }
 
-        const CYCLES_PER_SECOND = 16_000_000;
-
+	const RENDER_FPS = 60;
         const runTick = () => {
             const startCycles = gba.cycleCount();
-            while (gba.cycleCount() - startCycles < (CYCLES_PER_SECOND / 60)) {
+            while (gba.cycleCount() - startCycles < (CYCLES_PER_SECOND / RENDER_FPS)) {
                 for (let i = 0; i < 10_000; i++) {
                     gba.step();
                 }
@@ -90,13 +90,7 @@ export default function Gba() {
             renderFunction(buffer);
         };
 
-        let lastRequestedAnimationFrame = 0;
-        const animationFrame = () => {
-            runTick();
-            lastRequestedAnimationFrame = requestAnimationFrame(animationFrame);
-        };
-
-        lastRequestedAnimationFrame = requestAnimationFrame(animationFrame);
+	let animationFrameInterval = setInterval(runTick, 1_000 / RENDER_FPS);
 
         const handleKeyEvent = (key: string, pressed: boolean) => {
             switch (key) {
@@ -150,7 +144,7 @@ export default function Gba() {
         return () => {
             document.removeEventListener('keydown', keyDownListener);
             document.removeEventListener('keyup', keyUpListener);
-            cancelAnimationFrame(lastRequestedAnimationFrame);
+            clearInterval(animationFrameInterval)
         };
     }, [romData]);
 
