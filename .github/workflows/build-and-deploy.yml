@@ -36,7 +36,7 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
-          node-version: lts/Jod
+          node-version: lts/Gallium
 
       - uses: actions-rs/toolchain@v1
         with:
